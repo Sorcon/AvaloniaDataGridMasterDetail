@@ -1,0 +1,66 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TestDataGridVirtualMasterDetail.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="TestDataGridVirtualMasterDetail.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="TestDataGridVirtualMasterDetail">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+  <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="Auto,*">
+      <TextBlock Grid.Row="0" Text="Устройства" Margin="5"/>
+      <TextBox Grid.Row="1" Text="{Binding FilterText}" Watermark="Поиск"></TextBox>
+      <DataGrid  VerticalScroll="OnVerticalScroll" Grid.ColumnSpan="2" CanUserResizeColumns="True"  LoadingRow="OnLoadingRow" UnloadingRow="OnUnloadingRow"  Name="MainDataGrid" Grid.Row="2" Items="{Binding TestItems}" RowDetailsVisibilityMode="Collapsed" SelectionMode="Single" GridLinesVisibility="All" IsReadOnly="True">
+          <DataGrid.Columns>
+              <DataGridTemplateColumn>
+                  <DataGridTemplateColumn.CellTemplate> 
+                      <DataTemplate> 
+                          <Button Name="SHButton" Command="{Binding ShowHideDetails}" Content="{Binding DetailsChar}"/> 
+                      </DataTemplate> 
+                  </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTextColumn Header="Имя" Binding="{Binding TestColumn}"/>
+          </DataGrid.Columns>
+          <DataGrid.RowDetailsTemplate>
+              <DataTemplate>
+                  <StackPanel Margin="30,0,0,0" >
+                      <TextBlock Text="Разделы" Margin="5"/>
+                      <DataGrid  LoadingRow="OnLoadingRow" CanUserResizeColumns="True" RowDetailsVisibilityChanged="DataGrid_OnRowDetailsVisibilityChanged" UnloadingRow="OnUnloadingRow" VerticalScrollBarVisibility="Disabled" RowDetailsVisibilityMode="Collapsed" Items="{Binding TestDetails1}"  SelectionMode="Single" Background="LightGray" GridLinesVisibility="All" IsReadOnly="True">
+                          <DataGrid.Columns>
+                              <DataGridTemplateColumn>
+                                  <DataGridTemplateColumn.CellTemplate> 
+                                      <DataTemplate> 
+                                          <Button Name="SHButton" Command="{Binding ShowHideDetails}" Content="{Binding DetailsChar}"/> 
+                                      </DataTemplate> 
+                                  </DataGridTemplateColumn.CellTemplate>
+                              </DataGridTemplateColumn>
+                              <DataGridTextColumn Header="Имя" Binding="{Binding TestColumn2}"/>
+                          </DataGrid.Columns>
+                          <DataGrid.RowDetailsTemplate>
+                              <DataTemplate>
+                                  <StackPanel Margin="30,0,0,0"  >
+                                      <TextBlock Text="Зоны" Margin="5"/>
+
+                                      <DataGrid VerticalScrollBarVisibility="Disabled" CanUserResizeColumns="True" Items="{Binding TestDetails2}"  SelectionMode="Extended"  Background="Aqua" GridLinesVisibility="All" IsReadOnly="True">
+                                          <DataGrid.Columns>
+                                              <DataGridTextColumn Header="Имя" Binding="{Binding TestColumn3}"/>
+                                              <DataGridTextColumn Header="Счетчик" Binding="{Binding Counter}"/>
+                                          </DataGrid.Columns>
+                                      </DataGrid>
+                                  </StackPanel>
+                              </DataTemplate>
+                          </DataGrid.RowDetailsTemplate>
+                      </DataGrid>
+                  </StackPanel>
+              </DataTemplate>
+          </DataGrid.RowDetailsTemplate>
+      </DataGrid>
+  </Grid>
+    
+    
+
+</Window>
