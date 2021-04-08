@@ -14,7 +14,7 @@
   <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="Auto,*">
       <TextBlock Grid.Row="0" Text="Устройства" Margin="5"/>
       <TextBox Grid.Row="1" Text="{Binding FilterText}" Watermark="Поиск"></TextBox>
-      <DataGrid  VerticalScroll="OnVerticalScroll" Grid.ColumnSpan="2" CanUserResizeColumns="True"  LoadingRow="OnLoadingRow" UnloadingRow="OnUnloadingRow"  Name="MainDataGrid" Grid.Row="2" Items="{Binding TestItems}" RowDetailsVisibilityMode="Collapsed" SelectionMode="Single" GridLinesVisibility="All" IsReadOnly="True">
+      <DataGrid   Grid.ColumnSpan="2" CanUserResizeColumns="True"  LoadingRow="OnLoadingRow" UnloadingRow="OnUnloadingRow"  Name="MainDataGrid" Grid.Row="2" Items="{Binding TestItems}" RowDetailsVisibilityMode="Collapsed" SelectionMode="Single" GridLinesVisibility="All" IsReadOnly="True">
           <DataGrid.Columns>
               <DataGridTemplateColumn>
                   <DataGridTemplateColumn.CellTemplate> 

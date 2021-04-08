@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using Avalonia.Controls;
 using ReactiveUI;
+using TestDataGridVirtualMasterDetail.Models;
 using TestDataGridVirtualMasterDetail.Views;
 
 namespace TestDataGridVirtualMasterDetail.ViewModels
@@ -14,89 +15,26 @@ namespace TestDataGridVirtualMasterDetail.ViewModels
 
 
 
-    public class SecondL : ReactiveUI.ReactiveObject, IDetailed
+    public class SecondL : TreeViewItemModel
     {
-        private string _DetailsChar = "⇊";
         public string TestColumn2 { get; init; } = "";
         public string RowDetail2 { get; init; } = "";
         public ObservableCollection<ThirdL> TestDetails2 { get; set; } = new ObservableCollection<ThirdL>();
-        public bool DetailsVisible { get; set; } = false;
-        public void ShowHideDetails()
-        {
-            DetailsVisible = !DetailsVisible;
-            DetailsChar = DetailsVisible ? "⇱" : "⇊";
-            ShowHideViewDetails();
-        }
-        public string DetailsChar
-        {
-            get => _DetailsChar;
-            set => this.RaiseAndSetIfChanged(ref _DetailsChar, value, nameof(DetailsChar));
-        }
-        public DataGridRow? BindedRow { get; set; } = null;
-        public bool AlreadyFixed { get; set; }
-        public double? OldHeight { get; set; }
-        public void HideDetails()
-        {
-            DetailsVisible = false;
-            DetailsChar = "⇊";
-        }
-
-        private void ShowHideViewDetails()
-        {
-            if (BindedRow != null) BindedRow.AreDetailsVisible = DetailsVisible;
-        }
+       
     }
 
-    public class ThirdL : ReactiveUI.ReactiveObject, IDetailed
+    public class ThirdL : TreeViewItemModel
     {
         public string TestColumn3 { get; init; } = "";
         public string Counter { get; set; } = "";
-        public bool DetailsVisible { get; set; } = false;
-        public DataGridRow? BindedRow { get; set; } = null;
-        public bool AlreadyFixed { get; set; }
-        public double? OldHeight { get; set; }
-        public void HideDetails()
-        {
-            
-        }
+
     }
 
-    public class FirstL : ReactiveUI.ReactiveObject, IDetailed
+    public class FirstL : TreeViewItemModel
     {
-
-
-        private string _DetailsChar = "⇊";
         public string TestColumn { get; init; } = "";
         public string RowDetail1 { get; init; } = "";
         public ObservableCollection<SecondL> TestDetails1 { get; set; } = new ObservableCollection<SecondL>();
-        public bool DetailsVisible { get; set; } = false;
-
-        public string DetailsChar
-        {
-            get => _DetailsChar;
-            set => this.RaiseAndSetIfChanged(ref _DetailsChar, value, nameof(DetailsChar));
-        }
-
-        public void HideDetails()
-        {
-            DetailsVisible = false;
-            DetailsChar = "⇊";
-        }
-
-        public void ShowHideDetails()
-        {
-            DetailsVisible = !DetailsVisible;
-            DetailsChar = DetailsVisible ? "⇱" : "⇊";
-            ShowHideViewDetails();
-        }
-        public DataGridRow? BindedRow { get; set; } = null;
-        public bool AlreadyFixed { get; set; }
-        public double? OldHeight { get; set; }
-
-        private void ShowHideViewDetails()
-        {
-            if (BindedRow != null) BindedRow.AreDetailsVisible = DetailsVisible;
-        }
     }
 
     public class MainWindowViewModel : ViewModelBase

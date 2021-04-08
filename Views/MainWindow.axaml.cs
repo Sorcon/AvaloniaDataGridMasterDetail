@@ -13,7 +13,7 @@ using Avalonia.Layout;
 using Avalonia.LogicalTree;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
-
+using TestDataGridVirtualMasterDetail.Models;
 using TestDataGridVirtualMasterDetail.ViewModels;
 
 namespace TestDataGridVirtualMasterDetail.Views
@@ -165,23 +165,12 @@ namespace TestDataGridVirtualMasterDetail.Views
             return result;
         }
 
-        private void OnVerticalScroll(object? sender, ScrollEventArgs e)
-        {
-            var dg = sender as DataGrid;
-            
-        }
+
     }
     
     
     
 
 
-    internal interface IDetailed
-    {
-        bool DetailsVisible { get; set; }
-        DataGridRow? BindedRow { get; set; }
-        bool AlreadyFixed { get; set; }
-        double? OldHeight { get; set; }
-        public void HideDetails();
-    }
+    
 }
