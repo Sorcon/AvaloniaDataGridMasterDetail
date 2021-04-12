@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Drawing;
+using System.Reactive.Subjects;
 using Avalonia.Controls;
 using ReactiveUI;
 
@@ -8,6 +10,8 @@ namespace TestDataGridVirtualMasterDetail.Models
 {
     public abstract class TreeViewItemModel: ReactiveUI.ReactiveObject, IDetailed, IColumned, IPictured, IAffected, INode
     {
+        #region DetailsView
+
         private string _detailsChar = OpenChar;
 
         public bool DetailsVisible { get; set; } = false;
@@ -41,23 +45,22 @@ namespace TestDataGridVirtualMasterDetail.Models
         }
 
 
-        public int IconsColumnCount()
-        {
-            throw new System.NotImplementedException();
-        }
+        #endregion
+        
 
         public abstract ObservableCollection<ColoredImage> Icons();
-        public abstract INode GetParent();
-        public abstract ObservableCollection<INode> GetChildren();
-        public abstract Color GetColor();
-        public abstract int ColumnsCount();
-        public abstract ObservableCollection<string> ColumnValues();
-        public abstract string ColumnValue(int column);
+        public abstract INode Parent { get; set; }
+        public abstract ObservableCollection<INode> Children { get; set; }
+        public abstract Color Color { get; set; }
 
         private ColumnsMeta? _columnsMeta;
-        public ref ColumnsMeta? ColumnsMeta()
+        public List<Subject<string>> ColumnValues { get; set; }
+
+
+
+        public ref ColumnsMeta ColumnsMeta
         {
-            return ref _columnsMeta;
+            get => ref _columnsMeta;
         }
 
         private void SetColumnsMeta(ref ColumnsMeta columnsMeta)
@@ -67,21 +70,17 @@ namespace TestDataGridVirtualMasterDetail.Models
 
         public ObservableCollection<EventModel> Affects { get; set; }
         public MemorySafer<string> AffectColorMemory { get; set; }
-        public string GetState()
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract string GetState();
     }
 
     public interface IColumned
     {
-        string ColumnValue(int column);
-        ref ColumnsMeta? ColumnsMeta();
+        List<Subject<string>> ColumnValues { get; set; }
+        ref ColumnsMeta? ColumnsMeta { get; }
     }
 
     public interface IPictured
     {
-        int IconsColumnCount();
         ObservableCollection<ColoredImage> Icons();
     }
 
@@ -100,9 +99,9 @@ namespace TestDataGridVirtualMasterDetail.Models
 
     public interface INode
     {
-        INode GetParent();
-        ObservableCollection<INode> GetChildren();
-        Color GetColor();
+        INode Parent { get; set; }
+        ObservableCollection<INode> Children { get; set; }
+        Color Color { get; set; }
     }
 
     public class ColumnsMeta
@@ -134,7 +133,37 @@ namespace TestDataGridVirtualMasterDetail.Models
         public void HideDetails();
     }
 
-    public interface ITreeViewConfiguration
+    public class TreeViewConfiguration
+    {
+        public string CloseChar { get; set; } = "⇱";
+        public string OpenChar { get; set; } = "⇊";
+        public uint TreeLevel { get; set; } = 3;
+        public ColumnsMeta ColumnsMeta { get; set; } = new ColumnsMeta(new List<string>(){"Имя", "Тип", "Состояние"});
+    }
+    
+    public class MemorySafer<T> : INotifyPropertyChanged
+    {
+        public delegate void ValueUpdateHandler(T newVal);
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event ValueUpdateHandler ValueChanged;
+        public MemorySafer(T value)
+        {
+            Value = value;
+        }
+        public T Value { get; private set; }
+
+        public void SetValue(T val)
+        {
+            this.Value = val;
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
+            this.ValueChanged?.Invoke(val);
+        }
+
+    }
+
+    public class EventModel
     {
         
     }
